@@ -34,9 +34,10 @@ class MemcachedConnector
             throw new RuntimeException('No Memcached servers added.');
         }
 
-        if (in_array('255.255.255', $memcachedStatus) && count(array_unique($memcachedStatus)) === 1) {
-            throw new RuntimeException('Could not establish Memcached connection.');
-        }
+        // fixed aliyun ocs
+//        if (in_array('255.255.255', $memcachedStatus) && count(array_unique($memcachedStatus)) === 1) {
+//            throw new RuntimeException('Could not establish Memcached connection.');
+//        }
 
         return $memcached;
     }
