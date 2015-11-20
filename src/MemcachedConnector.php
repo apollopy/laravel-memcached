@@ -17,27 +17,27 @@ class MemcachedConnector
      */
     public function connect(array $servers)
     {
-        $memcached = $this->getMemcached();
+        $persistent_id = @$servers[0]['persistent_id'];
+        $memcached = $this->getMemcached($persistent_id);
 
-        // For each server in the array, we'll just extract the configuration and add
-        // the server to the Memcached connection. Once we have added all of these
-        // servers we'll verify the connection is successful and return it back.
+        if (count($memcached->getServerList()) > 0) {
+            return $memcached;
+        }
+
+        $memcached_servers = [];
         foreach ($servers as $server) {
-            $memcached->addServer(
-                $server['host'], $server['port'], $server['weight']
-            );
+            $memcached_servers[] = [$server['host'], $server['port'], $server['weight']];
+        }
+        $memcached->addServers($memcached_servers);
+
+        if(isset($servers[0]['username']) && ini_get('memcached.use_sasl')) {
+            $memcached->setSaslAuthData($servers[0]['username'], $servers[0]['password']);
         }
 
         $memcachedStatus = $memcached->getVersion();
-
         if (! is_array($memcachedStatus)) {
             throw new RuntimeException('No Memcached servers added.');
         }
-
-        // fixed aliyun ocs
-//        if (in_array('255.255.255', $memcachedStatus) && count(array_unique($memcachedStatus)) === 1) {
-//            throw new RuntimeException('Could not establish Memcached connection.');
-//        }
 
         return $memcached;
     }
@@ -47,8 +47,13 @@ class MemcachedConnector
      *
      * @return \Memcached
      */
-    protected function getMemcached()
+
+    /**
+     * @param null|string $persistent_id
+     * @return \Memcached
+     */
+    protected function getMemcached($persistent_id = null)
     {
-        return new Memcached;
+        return new Memcached($persistent_id);
     }
 }
