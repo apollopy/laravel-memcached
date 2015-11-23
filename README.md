@@ -1,5 +1,7 @@
 # laravel-memcached
 
+Memcached for Laravel 5.1, with persistent connection and sasl authentication support, compatible with aliyun osc.
+
 ## Installation
 
 This service provider must be registered.

@@ -47,10 +47,6 @@ class MemcachedConnector extends AbstractMemcachedConnector
     /**
      * Get a new Memcached instance.
      *
-     * @return \Memcached
-     */
-
-    /**
      * @param null|string $persistent_id
      * @return \Memcached
      */
