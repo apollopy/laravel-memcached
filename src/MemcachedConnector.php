@@ -4,20 +4,22 @@ namespace ApolloPY\Memcached;
 
 use Memcached;
 use RuntimeException;
+use Illuminate\Cache\MemcachedConnector as AbstractMemcachedConnector;
 
-class MemcachedConnector
+class MemcachedConnector extends AbstractMemcachedConnector
 {
     /**
      * Create a new Memcached connection.
      *
      * @param  array  $servers
+     * @param  array  $config
      * @return \Memcached
      *
      * @throws \RuntimeException
      */
-    public function connect(array $servers)
+    public function connect(array $servers, array $config = null)
     {
-        $persistent_id = @$servers[0]['persistent_id'];
+        $persistent_id = @$config['persistent_id'];
         $memcached = $this->getMemcached($persistent_id);
 
         if (count($memcached->getServerList()) > 0) {
@@ -30,8 +32,8 @@ class MemcachedConnector
         }
         $memcached->addServers($memcached_servers);
 
-        if(isset($servers[0]['username']) && ini_get('memcached.use_sasl')) {
-            $memcached->setSaslAuthData($servers[0]['username'], $servers[0]['password']);
+        if(isset($config['username']) && ini_get('memcached.use_sasl')) {
+            $memcached->setSaslAuthData($config['username'], $config['password']);
         }
 
         $memcachedStatus = $memcached->getVersion();
