@@ -10,7 +10,8 @@ class CacheManager extends AbstractCacheManager
     /**
      * Create an instance of the Memcached cache driver.
      *
-     * @param  array  $config
+     * @param  array $config
+     *
      * @return \Illuminate\Cache\MemcachedStore
      */
     protected function createMemcachedDriver(array $config)
