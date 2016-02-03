@@ -4,20 +4,23 @@ Memcached for Laravel 5.1, with persistent connection and sasl authentication su
 
 ## Installation
 
-This service provider must be registered.
+This service provider must be **replace**.
 
 ```php
 // config/app.php
 
 'providers' => [
+    // Illuminate\Cache\CacheServiceProvider::class,
     '...',
-    ApolloPY\Memcached\MemcachedServiceProvider::class,
+    ApolloPY\Memcached\CacheServiceProvider::class,
 ];
 ```
 
-edit the config file: config/cache.php
+edit the cache config
 
 ```php
+// config/cache.php
+
 'memcached' => [
     'driver'  => 'memcached',
     'servers' => [

@@ -2,6 +2,7 @@
     "name": "apollopy/laravel-memcached",
     "description": "Memcached for Laravel 5.1, with persistent connection and sasl authentication support, compatible with aliyun osc.",
     "keywords": ["laravel", "memcached"],
+    "license": "MIT",
     "authors": [
         {
             "name": "ApolloPY",
@@ -10,8 +11,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "illuminate/cache": "5.1.*",
-        "illuminate/support": "5.1.*"
+        "illuminate/cache": "5.1.*"
     },
     "autoload": {
         "psr-4": {
