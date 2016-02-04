@@ -13,7 +13,6 @@ class MemcachedConnector extends AbstractMemcachedConnector
      *
      * @param  array $servers
      * @param  array $config
-     *
      * @return \Memcached
      * @throws \RuntimeException
      */
@@ -26,6 +25,10 @@ class MemcachedConnector extends AbstractMemcachedConnector
             return $memcached;
         }
 
+        if (isset($config['options']) && is_array($config['options'])) {
+            $memcached->setOptions($config['options']);
+        }
+
         $memcached_servers = [];
         foreach ($servers as $server) {
             $memcached_servers[] = [$server['host'], $server['port'], $server['weight']];
@@ -36,9 +39,16 @@ class MemcachedConnector extends AbstractMemcachedConnector
             $memcached->setSaslAuthData($config['username'], $config['password']);
         }
 
-        $memcachedStatus = $memcached->getVersion();
-        if (!is_array($memcachedStatus)) {
-            throw new RuntimeException('No Memcached servers added.');
+        if ((isset($config['check_version']) ? (bool) $config['check_version'] : true)) {
+            $memcachedStatus = $memcached->getVersion();
+
+            if (!is_array($memcachedStatus)) {
+                throw new RuntimeException('No Memcached servers added.');
+            }
+
+            if (in_array('255.255.255', $memcachedStatus) && count(array_unique($memcachedStatus)) === 1) {
+                throw new RuntimeException('Could not establish Memcached connection.');
+            }
         }
 
         return $memcached;
@@ -48,7 +58,6 @@ class MemcachedConnector extends AbstractMemcachedConnector
      * Get a new Memcached instance.
      *
      * @param null|string $persistent_id
-     *
      * @return \Memcached
      */
     protected function getMemcached($persistent_id = null)

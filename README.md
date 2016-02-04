@@ -33,5 +33,11 @@ edit the cache config
     'persistent_id' => 'you persistent id',
     'username' => 'you username',
     'password' => 'you password',
+    'options'       => [ // optional
+        Memcached::OPT_COMPRESSION     => false,
+        Memcached::OPT_BINARY_PROTOCOL => true,
+        ...
+    ],
+    'check_version' => false, // optional, default true
 ],
 ```
