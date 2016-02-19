@@ -11,9 +11,8 @@ This service provider must be **replace**.
 
 'providers' => [
     // Illuminate\Cache\CacheServiceProvider::class,
-    '...',
     ApolloPY\Memcached\CacheServiceProvider::class,
-];
+]
 ```
 
 edit the cache config
