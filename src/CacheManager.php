@@ -2,7 +2,6 @@
 
 namespace ApolloPY\Memcached;
 
-use Illuminate\Cache\MemcachedStore;
 use Illuminate\Cache\CacheManager as AbstractCacheManager;
 
 class CacheManager extends AbstractCacheManager
