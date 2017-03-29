@@ -35,7 +35,7 @@ class MemcachedConnector extends AbstractMemcachedConnector
         }
         $memcached->addServers($memcached_servers);
 
-        if (isset($config['username']) && ini_get('memcached.use_sasl')) {
+        if (isset($config['username']) && ini_get('memcached.use_sasl') && method_exists($memcached, 'setSaslAuthData')) {
             $memcached->setSaslAuthData($config['username'], $config['password']);
         }
 

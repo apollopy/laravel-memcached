@@ -13,7 +13,7 @@ class MemcachedStore extends AbstractMemcachedStore
 {
     /**
      * @param array $keys
-     * @return mixed
+     * @return array|bool
      */
     public function getMulti(array $keys)
     {
@@ -30,5 +30,7 @@ class MemcachedStore extends AbstractMemcachedStore
 
             return array_combine($value_keys, $values);
         }
+
+        return false;
     }
 }
