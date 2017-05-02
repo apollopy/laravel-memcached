@@ -23,8 +23,8 @@ class MemcachedStore extends AbstractMemcachedStore
     /**
      * Create a new Memcached store.
      *
-     * @param  \Memcached  $memcached
-     * @param  string      $prefix
+     * @param  \Memcached $memcached
+     * @param  string $prefix
      */
     public function __construct($memcached, $prefix = '')
     {
@@ -36,10 +36,9 @@ class MemcachedStore extends AbstractMemcachedStore
 
     /**
      * Retrieve multiple items from the cache by key.
-     *
      * Items not found in the cache will have a null value.
      *
-     * @param  array  $keys
+     * @param  array $keys
      * @return array
      */
     public function many(array $keys)
@@ -66,24 +65,10 @@ class MemcachedStore extends AbstractMemcachedStore
     /**
      * @deprecated use function many
      * @param array $keys
-     * @return array|bool
+     * @return array
      */
     public function getMulti(array $keys)
     {
-        $keys = array_map(function ($key) {
-            return $this->prefix.$key;
-        }, $keys);
-
-        $values = $this->memcached->getMulti($keys);
-
-        if ($this->memcached->getResultCode() == 0) {
-            $value_keys = array_map(function ($key) {
-                return substr($key, strlen($this->prefix));
-            }, array_keys($values));
-
-            return array_combine($value_keys, $values);
-        }
-
-        return false;
+        return $this->many($keys);
     }
 }
